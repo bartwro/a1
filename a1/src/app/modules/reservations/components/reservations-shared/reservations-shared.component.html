@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                <span data-feather="home"></span>
+                Reservations <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/reservations']">
+                <span data-feather="file"></span>
+                Upcoming
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/reservations', 'my']">
+                <span data-feather="shopping-cart"></span>
+                My
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/reservations', 'new']">
+                <span data-feather="users"></span>
+                New
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10">
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+      </main>
+    </div>
+  </div>
