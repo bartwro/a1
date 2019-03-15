@@ -6,6 +6,7 @@ import { ReservationsNewComponent } from './components/reservations-new/reservat
 import { RouterModule } from '@angular/router';
 import { ReservationsSharedComponent } from './components/reservations-shared/reservations-shared.component';
 import { MatTableModule } from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [ReservationsListComponent, ReservationsMyComponent, ReservationsNewComponent, ReservationsSharedComponent],
@@ -27,7 +28,7 @@ import { MatTableModule } from '@angular/material/table';
       },
     ]),
     MatTableModule,
-    // CdkTableModule
+    MatPaginatorModule
   ]
 })
 export class ReservationsModule { }

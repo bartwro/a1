@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="reservations">  
+<!-- <table mat-table [dataSource]="reservations">  
   <ng-container matColumnDef="roomName">
     <th mat-header-cell *matHeaderCellDef> Room </th>
     <td mat-cell *matCellDef="let element"> {{element.roomName}} </td>
@@ -27,4 +27,77 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-</table>
+</table>-->
+<mat-paginator></mat-paginator> 
+
+<div class="container">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Room</th>
+        <th scope="col">Who</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"></th>
+        <td><input class="form-control" id="filterByRoom" type="text" (change)="onFilterByRoom($event.target.value)"></td>
+        <td><input class="form-control" id="filterByWho" type="text"></td>
+        <td><input class="form-control" id="filterByFrom" type="date"></td>
+        <td><input class="form-control" id="filterByTo" type="date"></td>
+      </tr>
+      <tr *ngFor="let reservation of currentPage">
+        <th scope="row">{{reservation.id}}</th>
+        <td>{{reservation.roomName}}</td>
+        <td>{{reservation.who }}</td>
+        <td>{{reservation.from | date: 'dd/mm/yy, hh:mm'}}</td>
+        <td>{{reservation.to | date: 'dd/mm/yy, hh:mm'}}</td>
+      </tr>
+      <tr>
+        <td colspan="5">
+            <div class="d-flex flex-row-reverse bd-highlight">
+                <form class="form-inline" style="align-items:center">
+                  <div class="form-group mb-2">
+                    <label for="pageSizeSelect">Items per page:</label>
+                    <select (change)="pageSizeChange($event.target.value)"
+                      class="custom-select custom-select-sm"
+                      id="pageSizeSelect"
+                      [value]="pagingDetails.selectedPageSize">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label for="pageSizeSelect">
+                      {{pagingDetails.currentPage}} of {{pagingDetails.numberOfPages}}
+                    </label>
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination">
+                        <li class="page-item">
+                          <a class="page-link" aria-label="Previous" (click)="goToPreviousPage()">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+
+                        <li class="page-item">
+                          <a class="page-link" aria-label="Next" (click)="goToNextPage()">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </form>
+            </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
