@@ -4,6 +4,7 @@ import { ReservationService } from '../../services/reservation.service';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { PagingDetails } from 'src/app/modules/shared/models/paging-details';
+import { ReservationListFilter } from '../../models/reservation-list-filter';
 
 @Component({
   selector: 'app-reservations-list',
@@ -19,7 +20,7 @@ export class ReservationsListComponent implements OnInit {
 
   displayedColumns: string[] = ['who', 'from', 'to'];
   selectedPageSize: number;
-
+  filter: ReservationListFilter = {};
   currentPage: Reservation[] = [];
 
   constructor(private reservationService: ReservationService) { }
@@ -85,9 +86,21 @@ export class ReservationsListComponent implements OnInit {
   }
 
   onFilterByRoom(filterValue: string): void {
-    // check all filters and apply all on this.reservations
-    this.filteredReservations = this.reservations.filter(x => x.roomName.includes(filterValue));
-    this.refreshCurrentPage();
-    // console.log(event);
+    this.filter.room = filterValue;
+    this.refreshFilteredReservations();
+    this.refreshPagingDtls();
+  }
+
+  onFilterByWho(filterValue: string): void {
+    this.filter.who = filterValue;
+    this.refreshFilteredReservations();
+    this.refreshPagingDtls();
+  }
+
+  refreshFilteredReservations(): void {
+    this.filteredReservations = this.reservations
+      .filter(x => (!this.filter.from || x.from >= this.filter.from)
+        && (!this.filter.room || x.roomName.includes(this.filter.room))
+        && (!this.filter.who || x.who.includes(this.filter.who)) );
   }
 }

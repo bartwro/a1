@@ -45,7 +45,7 @@
       <tr>
         <th scope="row"></th>
         <td><input class="form-control" id="filterByRoom" type="text" (change)="onFilterByRoom($event.target.value)"></td>
-        <td><input class="form-control" id="filterByWho" type="text"></td>
+        <td><input class="form-control" id="filterByWho" type="text" (change)="onFilterByWho($event.target.value)"></td>
         <td><input class="form-control" id="filterByFrom" type="date"></td>
         <td><input class="form-control" id="filterByTo" type="date"></td>
       </tr>
@@ -66,9 +66,7 @@
                       class="custom-select custom-select-sm"
                       id="pageSizeSelect"
                       [value]="pagingDetails.selectedPageSize">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
+                      <option *ngFor="let option of pagingDetails.pageSizeOptions">{{option}}</option>
                     </select>
                   </div>
                   <div class="form-group mb-2">
