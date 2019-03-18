@@ -34,7 +34,7 @@ export class ReservationService {
     {
       id: 4,
       roomName: 'Apple2',
-      from: new Date(2019, 4, 2, 9, 0),
+      from: new Date(98, 3),
       to: new Date(2019, 4, 2, 12, 0),
       who: 'Tim Cook',
       description: 'How to make money in IT?'
@@ -42,8 +42,8 @@ export class ReservationService {
     {
       id: 5,
       roomName: 'Gameboy',
-      from: new Date(2019, 4, 2, 9, 0),
-      to: new Date(2019, 4, 2, 12, 0),
+      from: new Date(2019, 4, 2, 9, 0, 0, 0),
+      to: new Date(2019, 4, 2, 12, 0, 0, 0),
       who: 'Tony Hawk',
       description: 'How to skate?'
     },

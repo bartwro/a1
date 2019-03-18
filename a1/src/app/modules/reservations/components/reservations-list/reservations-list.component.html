@@ -1,4 +1,4 @@
-<!-- <table mat-table [dataSource]="reservations">  
+<table mat-table [dataSource]="reservations">  
   <ng-container matColumnDef="roomName">
     <th mat-header-cell *matHeaderCellDef> Room </th>
     <td mat-cell *matCellDef="let element"> {{element.roomName}} </td>
@@ -27,15 +27,26 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-</table>-->
+</table>
 <mat-paginator></mat-paginator> 
-
 <div class="container">
-  <table class="table">
-    <thead class="thead-dark">
+  <table class="table table-striped table-bordered">
+    <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Room</th>
+        <th scope="col">
+          <!-- <div> -->
+          <div class="d-flex justify-content-between">
+            Room
+            <div>
+              <img 
+              (mouseover)="onMouseOver()"
+              (mouseout)="onMouseOut()"
+              [src]="sortDownIcon"
+              (click)="onRoomSortClick()" />
+            </div>
+          </div>
+        </th>
         <th scope="col">Who</th>
         <th scope="col">From</th>
         <th scope="col">To</th>
@@ -46,15 +57,15 @@
         <th scope="row"></th>
         <td><input class="form-control" id="filterByRoom" type="text" (change)="onFilterByRoom($event.target.value)"></td>
         <td><input class="form-control" id="filterByWho" type="text" (change)="onFilterByWho($event.target.value)"></td>
-        <td><input class="form-control" id="filterByFrom" type="date"></td>
+        <td><input class="form-control" id="filterByFrom" type="date" (change)="onFilterByFrom($event.target.value)"></td>
         <td><input class="form-control" id="filterByTo" type="date"></td>
       </tr>
       <tr *ngFor="let reservation of currentPage">
         <th scope="row">{{reservation.id}}</th>
         <td>{{reservation.roomName}}</td>
         <td>{{reservation.who }}</td>
-        <td>{{reservation.from | date: 'dd/mm/yy, hh:mm'}}</td>
-        <td>{{reservation.to | date: 'dd/mm/yy, hh:mm'}}</td>
+        <td>{{reservation.from | date: 'd/M/yy, hh:mm'}}</td>
+        <td>{{reservation.to | date: 'd/M/yy, hh:mm'}}</td>
       </tr>
       <tr>
         <td colspan="5">
