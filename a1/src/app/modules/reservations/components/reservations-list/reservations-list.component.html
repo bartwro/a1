@@ -1,66 +1,67 @@
-<table mat-table [dataSource]="reservations">  
-  <ng-container matColumnDef="roomName">
-    <th mat-header-cell *matHeaderCellDef> Room </th>
-    <td mat-cell *matCellDef="let element"> {{element.roomName}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="from">
-    <th mat-header-cell *matHeaderCellDef> From </th>
-    <td mat-cell *matCellDef="let element"> {{element.from}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="to">
-    <th mat-header-cell *matHeaderCellDef> To </th>
-    <td mat-cell *matCellDef="let element"> {{element.to}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="who">
-      <th mat-header-cell *matHeaderCellDef> Who </th>
-      <td mat-cell *matCellDef="let element"> {{element.who}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
-<mat-paginator></mat-paginator> 
 <div class="container">
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col"><img [src]="viewModel.filterListPath" (click)="filterToggle()" /></th>
         <th scope="col">
-          <!-- <div> -->
           <div class="d-flex justify-content-between">
             Room
             <div>
               <img 
-              (mouseover)="onMouseOver()"
-              (mouseout)="onMouseOut()"
-              [src]="sortDownIcon"
-              (click)="onRoomSortClick()" />
+              (mouseover)="onMouseOver('room')"
+              (mouseout)="onMouseOut('room')"
+              [src]="viewModel.sortByIcon.room"
+              (click)="onSortClick('room')" />
             </div>
           </div>
         </th>
-        <th scope="col">Who</th>
-        <th scope="col">From</th>
-        <th scope="col">To</th>
+        <th scope="col">
+          <div class="d-flex justify-content-between">
+            Who
+            <div>
+              <img 
+              (mouseover)="onMouseOver('who')"
+              (mouseout)="onMouseOut('who')"
+              [src]="viewModel.sortByIcon.who"
+              (click)="onSortClick('who')" />
+            </div>
+          </div>
+        </th>
+        <th scope="col">
+          <div class="d-flex justify-content-between">
+              From
+              <div>
+                <img 
+                (mouseover)="onMouseOver('from')"
+                (mouseout)="onMouseOut('from')"
+                [src]="viewModel.sortByIcon.from"
+                (click)="onSortClick('from')" />
+              </div>
+            </div>
+        </th>
+        <th scope="col">
+          <div class="d-flex justify-content-between">
+              To
+              <div>
+                <img 
+                (mouseover)="onMouseOver('to')"
+                (mouseout)="onMouseOut('to')"
+                [src]="viewModel.sortByIcon.to"
+                (click)="onSortClick('to')" />
+              </div>
+            </div>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr *ngIf="viewModel.filteringOn">
         <th scope="row"></th>
         <td><input class="form-control" id="filterByRoom" type="text" (change)="onFilterByRoom($event.target.value)"></td>
         <td><input class="form-control" id="filterByWho" type="text" (change)="onFilterByWho($event.target.value)"></td>
         <td><input class="form-control" id="filterByFrom" type="date" (change)="onFilterByFrom($event.target.value)"></td>
         <td><input class="form-control" id="filterByTo" type="date"></td>
       </tr>
-      <tr *ngFor="let reservation of currentPage">
+      <tr *ngFor="let reservation of viewModel.currentPage">
         <th scope="row">{{reservation.id}}</th>
         <td>{{reservation.roomName}}</td>
         <td>{{reservation.who }}</td>
@@ -76,31 +77,18 @@
                     <select (change)="pageSizeChange($event.target.value)"
                       class="custom-select custom-select-sm"
                       id="pageSizeSelect"
-                      [value]="pagingDetails.selectedPageSize">
-                      <option *ngFor="let option of pagingDetails.pageSizeOptions">{{option}}</option>
+                      [value]="viewModel.pagingDetails.selectedPageSize">
+                      <option *ngFor="let option of viewModel.pagingDetails.pageSizeOptions">{{option}}</option>
                     </select>
                   </div>
                   <div class="form-group mb-2">
                     <label for="pageSizeSelect">
-                      {{pagingDetails.currentPage}} of {{pagingDetails.numberOfPages}}
+                      {{viewModel.pagingDetails.currentPage}} of {{viewModel.pagingDetails.numberOfPages}}
                     </label>
                   </div>
                   <div class="form-group mx-sm-3 mb-2">
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination">
-                        <li class="page-item">
-                          <a class="page-link" aria-label="Previous" (click)="goToPreviousPage()">
-                            <span aria-hidden="true">&laquo;</span>
-                          </a>
-                        </li>
-
-                        <li class="page-item">
-                          <a class="page-link" aria-label="Next" (click)="goToNextPage()">
-                            <span aria-hidden="true">&raquo;</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
+                    <img [src]="viewModel.arrowLeftPath" (click)="goToPreviousPage()" />
+                    <img [src]="viewModel.arrowRightPath" (click)="goToNextPage()" />
                   </div>
                 </form>
             </div>
