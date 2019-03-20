@@ -70,14 +70,19 @@ export class ReservationsListComponent implements OnInit {
   }
 
   goToNextPage(): void {
-    // move page right...
-    this.viewModel.pagingDetails.currentPage++;
-    this.refreshCurrentPage();
+
+    if (this.viewModel.isNavigateRightActive()) {
+      // move page right...
+      this.viewModel.pagingDetails.currentPage++;
+      this.refreshCurrentPage();
+    }
   }
 
   goToPreviousPage(): void {
-    this.viewModel.pagingDetails.currentPage--;
-    this.refreshCurrentPage();
+    if (this.viewModel.isNavigateLeftActive()) {
+      this.viewModel.pagingDetails.currentPage--;
+      this.refreshCurrentPage();
+    }
   }
 
   onFilterByRoom(filterValue: string): void {

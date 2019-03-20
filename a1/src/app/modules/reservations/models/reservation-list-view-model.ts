@@ -18,10 +18,32 @@ export class ReservationListViewModel {
     sortByStatus: { [key: string]: number } = {};
     sortByIcon: any = {};
     fields = ['room', 'who', 'from', 'to'];
-    arrowRightPath = '../../../../../assets/icons/navigate_next.svg';
-    arrowLeftPath = '../../../../../assets/icons/navigate_before.svg';
     filterListPath = '../../../../../assets/icons/filter_list.svg';
     filteringOn = false;
+    arrowRightInactivePath = '../../../../../assets/icons/navigate_next_inactive.svg';
+    arrowRightActivePath = '../../../../../assets/icons/navigate_next.svg';
+    arrowLeftInactivePath = '../../../../../assets/icons/navigate_before_inactive.svg';
+    arrowLeftActivePath = '../../../../../assets/icons/navigate_before.svg';
+
+    get arrowRightPath(): string {
+      return this.isNavigateRightActive() ?
+        this.arrowRightActivePath :
+        this.arrowRightInactivePath;
+    }
+
+    isNavigateRightActive() {
+      return this.pagingDetails.currentPage < this.pagingDetails.numberOfPages;
+    }
+
+    isNavigateLeftActive() {
+      return this.pagingDetails.currentPage > 1;
+    }
+
+    get arrowLeftPath(): string {
+      return this.isNavigateLeftActive() ?
+        this.arrowLeftActivePath :
+        this.arrowLeftInactivePath;
+    }
 
     constructor() {
         this.displayedColumns = ['who', 'from', 'to'];
