@@ -1,3 +1,34 @@
-<p>
-  reservations-new works!
-</p>
+<form>
+  <button type="submit" class="btn btn-primary">Save</button>
+  <div class="form-group">
+    <label for="selectRoom">Room</label>
+    <select class="form-control" id="selectRoom" placeholder="Room">
+      <option *ngFor='let room of rooms'>
+        {{room.name}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Who</label>
+    <select class="form-control" id="formGroupExampleInput2" placeholder="Who">
+      <option *ngFor='let person of people'>
+        {{person.firstName + ' ' + person.lastName}}
+      </option>
+    </select>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label for="startTime">From</label>
+      <input type="date" class="form-control" id="startTime" placeholder="Start time">
+    </div>
+    <div class="form-group col-sm-6">
+      <label for="endTime">To</label>
+      <input type="date" class="form-control" id="endTime" placeholder="End time">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <app-calendar></app-calendar>
+    </div>
+  </div>
+</form>

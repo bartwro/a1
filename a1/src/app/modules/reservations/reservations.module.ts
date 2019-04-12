@@ -6,10 +6,11 @@ import { ReservationsNewComponent } from './components/reservations-new/reservat
 import { RouterModule } from '@angular/router';
 import { ReservationsSharedComponent } from './components/reservations-shared/reservations-shared.component';
 import { MatTableModule } from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 @NgModule({
-  declarations: [ReservationsListComponent, ReservationsMyComponent, ReservationsNewComponent, ReservationsSharedComponent],
+  declarations: [ReservationsListComponent, ReservationsMyComponent, ReservationsNewComponent, ReservationsSharedComponent, CalendarComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([

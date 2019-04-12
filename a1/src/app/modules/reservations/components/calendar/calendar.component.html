@@ -1,0 +1,15 @@
+<div class="table-responsive">
+  <table class="table-bordered w-100">
+    <thead>
+      <th colspan="2">
+        <input type="date" class="form-control text-center" id="startTime" placeholder="Start time">
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hour of getHours()">
+        <td class="w-25">{{hour}}</td>
+        <td class="w-75"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

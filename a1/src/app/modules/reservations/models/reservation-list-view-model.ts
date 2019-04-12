@@ -24,6 +24,7 @@ export class ReservationListViewModel {
     arrowRightActivePath = '../../../../../assets/icons/navigate_next.svg';
     arrowLeftInactivePath = '../../../../../assets/icons/navigate_before_inactive.svg';
     arrowLeftActivePath = '../../../../../assets/icons/navigate_before.svg';
+    addIconPath = '../../../../../assets/icons/add_icon.svg';
 
     get arrowRightPath(): string {
       return this.isNavigateRightActive() ?
