@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Reservation } from '../../models/reservation';
 import { ReservationService } from '../../services/reservation.service';
 import { ReservationListViewModel } from '../../models/reservation-list-view-model';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-reservations-list',
@@ -11,8 +12,11 @@ import { ReservationListViewModel } from '../../models/reservation-list-view-mod
 export class ReservationsListComponent implements OnInit {
 
   viewModel = new ReservationListViewModel();
+  reservationListForm: FormGroup;
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(
+    private reservationService: ReservationService,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
     this.reservationService
@@ -21,6 +25,7 @@ export class ReservationsListComponent implements OnInit {
 
     // this.viewModel.sortByRoomIcon = this.viewModel.sortDownInactiveIcon;
     this.viewModel.sortByIcon.room = this.viewModel.sortDownInactiveIcon;
+    this.reservationListForm = this.fb.group({});
   }
 
   private onInitLoad(data: Reservation[]): void {

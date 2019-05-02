@@ -18,8 +18,8 @@ export class ReservationService {
     {
       id: 2,
       roomName: 'Alto',
-      from: new Date(2019, 4, 2, 9, 0),
-      to: new Date(2019, 4, 2, 12, 0),
+      from: new Date(2019, 4, 2, 12, 0),
+      to: new Date(2019, 4, 2, 14, 0),
       who: 'Adam Mickiewicz',
       description: 'Wielka Improwizacja'
     },
@@ -57,5 +57,9 @@ export class ReservationService {
         resolveFn(this.reservations);
       }
     );
+  }
+
+  getByDate(date: Date) {
+    return this.reservations.filter(x => x.from.toLocaleDateString() === date.toLocaleDateString());
   }
 }
