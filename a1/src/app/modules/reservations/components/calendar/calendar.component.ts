@@ -3,6 +3,8 @@ import { ReservationService } from '../../services/reservation.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { CalendarNewEntryComponent } from '../calendar-new-entry/calendar-new-entry.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarNewEntryData } from '../../models/calendar-new-entry-data';
 
 @Component({
   selector: 'app-calendar',
@@ -11,7 +13,7 @@ import { CalendarNewEntryComponent } from '../calendar-new-entry/calendar-new-en
 })
 export class CalendarComponent implements OnInit {
 
-  day: Date = new Date(Date.now());
+  selectedDay: Date = new Date();
   newReservationForm: FormGroup;
   entries: number[] = [];
   startHour: number;
@@ -20,21 +22,24 @@ export class CalendarComponent implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private fb: FormBuilder,
-    public dialog: MatDialog) 
+    private modalService: NgbModal) 
   {}
 
   ngOnInit() {
-    const date = new Date();
-    let m = date.getMonth()+1;
+    let m = this.selectedDay.getMonth()+1;
     let month = m < 10 ? '0' + m : m;
+    let d = this.selectedDay.getDate();
+    let day = d < 10 ? '0' + d : d;
     this.newReservationForm = this.fb.group({
-      day: [`${date.getFullYear()}-${month}-${date.getDate()}`],
+      day: [`${this.selectedDay.getFullYear()}-${month}-${day}`],
       from: [''],
       to: ['']
-    })
+    })  
 
     this.newReservationForm.get('day').valueChanges.subscribe(
-      selectedDay => this.refreshCalendar(selectedDay)
+      selectedDay => {
+        this.refreshCalendar(selectedDay);
+      }
     );
   }
 
@@ -52,7 +57,7 @@ export class CalendarComponent implements OnInit {
 
   // 1st column
   getHours(): string[] {
-    const numbers = Array.from(Array(24).keys());
+    const numbers = Array.from(Array(24).keys()); //todo:replace it with more traditional code
     const result: string[] = [];
     numbers.forEach(x => {
       let hour = x;
@@ -86,33 +91,52 @@ export class CalendarComponent implements OnInit {
   }
 
   isBusy(hour: string){
-    const parts = hour.split(' ');
-    let value = +parts[0];
-    if(parts[1] == 'PM'){
-      value += 12;
-    }
+    let value = this.getHourNumber(hour);
     return this.entries.indexOf(value) > -1;
   }
 
-  onHourDblClick(){
-    let fromLocal = new Date();
-    let toLocal = new Date();
-    let titleLocal = '';
-    let newEntryData = {};
-    const dialogRef = this.dialog.open(CalendarNewEntryComponent, {
-      width: '250px',
-      data: { from: fromLocal, to: toLocal, title: titleLocal }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('new entry dialog was closed');
-      newEntryData = result;
-    });
-
-    console.log('dbl click works');
+  private getHourNumber(hour: string) {
+    const parts = hour.split(' ');
+    let value = +parts[0];
+    if (parts[1] == 'PM') {
+      value += 12;
+    }
+    return value;
   }
 
-  // 2nd column
-  // getReservations()
+  openModal(hour: string, minutes: string) {
+
+    const ifAvailable = !this.isBusy(hour);
+    
+    if( ifAvailable ) {
+      let hourNumber = this.getHourNumber(hour);
+      let hourNumberInc = hourNumber+1;
+      const startHour = `${hourNumber<10 ? '0'+hourNumber : hourNumber}`;
+      const endHour = `${hourNumberInc<10 ? '0'+hourNumberInc : hourNumberInc}`;
+      let fromLocal = `${startHour}:${minutes}`;
+      let toLocal = `${endHour}:${minutes}`;
+      let titleLocal = '';
+      let newEntryData = {to: '', from: '', title: ''};
+
+      const modalRef = this.modalService.open(CalendarNewEntryComponent);     
+      modalRef.componentInstance.data = { from: fromLocal, to: toLocal, title: titleLocal };
+      modalRef.result.then(
+        resultData => {
+          newEntryData = resultData;
+          this.saveNewCalendarEntry(resultData.from, resultData.to);
+        },
+        reject => console.log('modal rejected, reason: ' + reject),
+      );
+    }
+  }
+
+  saveNewCalendarEntry(from: string, to: string) {
+    const start = +from.split(':')[0];
+    const end = +to.split(':')[0];
+
+    for (let _i = start; _i < end ; _i++) {
+      this.entries.push(_i);
+    }
+  }
 
 }

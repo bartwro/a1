@@ -10,8 +10,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarNewEntryComponent } from './components/calendar-new-entry/calendar-new-entry.component';
-import { MatDialogModule } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ReservationsListComponent, ReservationsMyComponent, ReservationsNewComponent, ReservationsSharedComponent, CalendarComponent, CalendarNewEntryComponent],
@@ -36,8 +36,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ]),
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule,
-    BrowserAnimationsModule
+    // MatDialogModule,
+    // BrowserAnimationsModule,
+    NgbModule
   ]
 })
 export class ReservationsModule { }

@@ -1,19 +1,37 @@
-<ol>
-    <li>
-      demo
-      <!-- <mat-form-field>
-        <input matInput [(ngModel)]="name" placeholder="What's your name?">
-      </mat-form-field> -->
-    </li>
-    <li>
-      <!-- <button mat-raised-button (click)="openDialog()">Pick one</button> -->
-    </li>
-    <!-- <li *ngIf="animal">
-      You chose: <i>{{animal}}</i>
-    </li> -->
-  </ol>
+<form 
+(ngSubmit)="save()"
+[formGroup]="componentFormGroup">
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New entry</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="inputFrom">From:</label>
+          <input type="time" class="form-control" formControlName="from" id="inputFrom">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="inputTo">To:</label>
+          <input type="time" class="form-control" formControlName="to" id="inputTo">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
+
   
-  
-  <!-- Copyright 2019 Google Inc. All Rights Reserved.
-      Use of this source code is governed by an MIT-style license that
-      can be found in the LICENSE file at http://angular.io/license -->
