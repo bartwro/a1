@@ -13,46 +13,17 @@ import { CalendarNewEntryData } from '../../models/calendar-new-entry-data';
 })
 export class CalendarComponent implements OnInit {
 
-  selectedDay: Date = new Date();
-  newReservationForm: FormGroup;
-  entries: number[] = [];
+  entries: string[] = [];
   startHour: number;
   endHour: number;
 
   constructor(
-    private reservationService: ReservationService,
-    private fb: FormBuilder,
+    // private reservationService: ReservationService,
+    // private fb: FormBuilder,
     private modalService: NgbModal) 
   {}
 
   ngOnInit() {
-    let m = this.selectedDay.getMonth()+1;
-    let month = m < 10 ? '0' + m : m;
-    let d = this.selectedDay.getDate();
-    let day = d < 10 ? '0' + d : d;
-    this.newReservationForm = this.fb.group({
-      day: [`${this.selectedDay.getFullYear()}-${month}-${day}`],
-      from: [''],
-      to: ['']
-    })  
-
-    this.newReservationForm.get('day').valueChanges.subscribe(
-      selectedDay => {
-        this.refreshCalendar(selectedDay);
-      }
-    );
-  }
-
-  refreshCalendar(selectedDay: string){
-    const parts = selectedDay.split('-');
-    const year = +parts[0];
-    const month = +parts[1];
-    const day = +parts[2];
-    const reservations = this.reservationService.getByDate(new Date(year, month, day));
-
-    reservations
-      .sort( (a, b) => a.from<b.from ? -1 : 1 )
-      .forEach(x => this.entries.push(x.from.getHours()));    
   }
 
   // 1st column
@@ -60,38 +31,15 @@ export class CalendarComponent implements OnInit {
     const numbers = Array.from(Array(24).keys()); //todo:replace it with more traditional code
     const result: string[] = [];
     numbers.forEach(x => {
-      let hour = x;
-      let entry = `${hour} AM`;
-      if (x > 12) {
-        hour -= 12;
-        entry = `${hour} PM`;
-      }
-      result.push( entry );
+      result.push( x<10 ? '0'+x : x.toString());
     });
 
     return result;
   }
-
-  save(){
-    console.log(this.entries);
-  }
-
-  markHour(hourString: string){
-    const parts = hourString.split(' ');
-    let hour = +parts[0];
-    if(parts[1] == 'PM'){
-      hour += 12;
-    }
-    const idx = this.entries.indexOf(hour);
-    if(idx > -1){
-      this.entries.splice(idx);
-    }else{
-      this.entries.push(hour);
-    }
-  }
-
-  isBusy(hour: string){
-    let value = this.getHourNumber(hour);
+  
+  isBusy(hour: string, minutes: string){
+    //let value = this.getHourNumber(hour);
+    const value = `${hour}:${minutes}`;
     return this.entries.indexOf(value) > -1;
   }
 
@@ -106,7 +54,7 @@ export class CalendarComponent implements OnInit {
 
   openModal(hour: string, minutes: string) {
 
-    const ifAvailable = !this.isBusy(hour);
+    const ifAvailable = !this.isBusy(hour, minutes);
     
     if( ifAvailable ) {
       let hourNumber = this.getHourNumber(hour);
@@ -116,13 +64,11 @@ export class CalendarComponent implements OnInit {
       let fromLocal = `${startHour}:${minutes}`;
       let toLocal = `${endHour}:${minutes}`;
       let titleLocal = '';
-      let newEntryData = {to: '', from: '', title: ''};
 
       const modalRef = this.modalService.open(CalendarNewEntryComponent);     
       modalRef.componentInstance.data = { from: fromLocal, to: toLocal, title: titleLocal };
       modalRef.result.then(
         resultData => {
-          newEntryData = resultData;
           this.saveNewCalendarEntry(resultData.from, resultData.to);
         },
         reject => console.log('modal rejected, reason: ' + reject),
@@ -131,12 +77,26 @@ export class CalendarComponent implements OnInit {
   }
 
   saveNewCalendarEntry(from: string, to: string) {
-    const start = +from.split(':')[0];
-    const end = +to.split(':')[0];
 
-    for (let _i = start; _i < end ; _i++) {
-      this.entries.push(_i);
+    const start = from.split(':');
+    const end = to.split(':');
+    let currentHour = start;
+
+    while(currentHour[0] <= end[0] ) {
+
+      if(currentHour[0] === end[0] && currentHour[1] === end[1]){
+        break;
+      } else {
+        this.entries.push(`${currentHour[0]}:${currentHour[1]}`);
+        if(currentHour[1] == '30'){
+          const newHour = +currentHour[0]+1;
+          currentHour[0] = newHour<10 ? '0'+newHour : newHour.toString();
+          currentHour[1] = '00';
+        } else{
+          currentHour[1] = '30';
+        }
+      }
+
     }
   }
-
 }
