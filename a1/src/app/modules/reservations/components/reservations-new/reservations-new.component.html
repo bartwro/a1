@@ -5,6 +5,13 @@
 
   <div class="form-row">
     <div class="form-group">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" [routerLink]="['/reservations']">Close</button>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
       <label for="selectRoom">Room</label>
       <select class="form-control" id="selectRoom" placeholder="Room" formControlName="room">
         <option *ngFor='let room of rooms'>
@@ -12,9 +19,7 @@
         </option>
       </select>
     </div>
-  </div>
 
-  <div class="form-row">
     <div class="form-group">
       <label for="formGroupExampleInput2">Who</label>
       <select class="form-control" id="formGroupExampleInput2" placeholder="Who" formControlName="who">
@@ -23,6 +28,9 @@
         </option>
       </select>
     </div>
+  </div>
+
+  <div class="form-row">
   </div>
 
   <div class="form-row">
@@ -73,13 +81,6 @@
         </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <button type="button" class="btn btn-secondary">Close</button>
     </div>
   </div>
 

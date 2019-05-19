@@ -5,10 +5,11 @@ import { Person } from '../../models/person';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReservationService } from '../../services/reservation.service';
 import { Component, OnInit} from '@angular/core';
-import { MatDialog } from '@angular/material';
 import { CalendarNewEntryComponent } from '../calendar-new-entry/calendar-new-entry.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarNewEntryData } from '../../models/calendar-new-entry-data';
+import { Router } from '@angular/router';
+import { Reservation } from '../../models/reservation';
 
 @Component({
   selector: 'app-reservations-new',
@@ -21,7 +22,7 @@ export class ReservationsNewComponent implements OnInit {
   rooms: Room[] = [];
   people: Person[] = [];
   selectedDay: Date = new Date();
-
+  addedEntries: {from: string, to: string}[] = [];
   entries: string[] = [];
   startHour: number;
   endHour: number;
@@ -31,7 +32,8 @@ export class ReservationsNewComponent implements OnInit {
     private peopleService: PeopleService,
     private fb: FormBuilder,
     private reservationService: ReservationService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private router: Router) { }
 
   ngOnInit() {
 
@@ -75,39 +77,59 @@ export class ReservationsNewComponent implements OnInit {
   }
 
   save(){
-    console.log(this.newReservationForm.get('day'));
+   
+    this.addedEntries.forEach(added => {
+      // var date2 = new Date('1995-12-17T03:24:00');
+      let fromStr = this.newReservationForm.get('day').value + 'T' + added.from + ':00';
+      let toStr = this.newReservationForm.get('day').value + 'T' + added.to + ':00';
+      let reservation: Reservation = {
+        id: 0,
+        description: '',
+        from: new Date(fromStr),
+        to: new Date(toStr),
+        who: this.newReservationForm.get('who').value,
+        roomName: this.newReservationForm.get('room').value
+      };
+      this.reservationService.save(reservation);
+    });
+
+    this.router.navigate(['/reservations']);
   }
 
     // 1st column
     getHours(): string[] {
-      const numbers = Array.from(Array(24).keys()); //todo:replace it with more traditional code
       const result: string[] = [];
-      numbers.forEach(x => {
-        result.push( x<10 ? '0'+x : x.toString());
-      });
+
+      for( let i=0; i< 24; i++ ){
+        let hour = i+8;
+        if(hour>24){
+          hour = hour - 24;
+        }
+        result.push( (hour<10 ? '0' + hour : hour.toString()) + ':00' );
+      }
   
       return result;
     }
     
     isBusy(hour: string, minutes: string){
-      //let value = this.getHourNumber(hour);
-      const value = `${hour}:${minutes}`;
+      const hourL = hour.split(':')[0];
+      const value = `${hourL}:${minutes}`;
       return this.entries.indexOf(value) > -1;
     }
   
     private getHourNumber(hour: string) {
-      const parts = hour.split(' ');
-      let value = +parts[0];
-      if (parts[1] == 'PM') {
-        value += 12;
+      let hString = hour.split(':')[0];
+      if(hString.startsWith('0')){
+        hString = hString.slice(1);
       }
+      let value = +hString;
       return value;
     }
   
     openModal(hour: string, minutes: string) {
   
       const ifAvailable = !this.isBusy(hour, minutes);
-      
+
       if( ifAvailable ) {
         let hourNumber = this.getHourNumber(hour);
         let hourNumberInc = hourNumber+1;
@@ -116,7 +138,6 @@ export class ReservationsNewComponent implements OnInit {
         let fromLocal = `${startHour}:${minutes}`;
         let toLocal = `${endHour}:${minutes}`;
         let titleLocal = '';
-  
         const modalRef = this.modalService.open(CalendarNewEntryComponent);     
         modalRef.componentInstance.data = { from: fromLocal, to: toLocal, title: titleLocal };
         modalRef.result.then(
@@ -127,13 +148,14 @@ export class ReservationsNewComponent implements OnInit {
         );
       }
     }
-  
+
     saveNewCalendarEntry(from: string, to: string) {
-  
+      this.addedEntries.push( {from: from, to: to} );
+
       const start = from.split(':');
       const end = to.split(':');
       let currentHour = start;
-  
+
       while(currentHour[0] <= end[0] ) {
   
         if(currentHour[0] === end[0] && currentHour[1] === end[1]){

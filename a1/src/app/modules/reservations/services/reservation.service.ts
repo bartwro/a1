@@ -6,7 +6,7 @@ import { Reservation } from '../models/reservation';
 })
 export class ReservationService {
 
-  private reservations = [
+  private reservations: Reservation[] = [
     {
       id: 1,
       roomName: 'Odra',
@@ -61,5 +61,10 @@ export class ReservationService {
 
   getByDate(date: Date) {
     return this.reservations.filter(x => x.from.toLocaleDateString() === date.toLocaleDateString());
+  }
+
+  save(reservation: Reservation){
+    console.log(reservation);
+    this.reservations.push(reservation);
   }
 }
