@@ -42,8 +42,8 @@ export class ReservationService {
     {
       id: 5,
       roomName: 'Gameboy',
-      from: new Date(2019, 4, 2, 9, 0, 0, 0),
-      to: new Date(2019, 4, 2, 12, 0, 0, 0),
+      from: new Date(2019, 4, 2, 14, 0, 0, 0),
+      to: new Date(2019, 4, 2, 15, 0, 0, 0),
       who: 'Tony Hawk',
       description: 'How to skate?'
     },

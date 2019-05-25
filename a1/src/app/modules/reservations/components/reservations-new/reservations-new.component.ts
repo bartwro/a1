@@ -67,19 +67,32 @@ export class ReservationsNewComponent implements OnInit {
   refreshCalendar(selectedDay: string){
     const parts = selectedDay.split('-');
     const year = +parts[0];
-    const month = +parts[1];
+    const month = +parts[1]-1;
     const day = +parts[2];
     const reservations = this.reservationService.getByDate(new Date(year, month, day));
 
-    // reservations
-    //   .sort( (a, b) => a.from<b.from ? -1 : 1 )
-    //   .forEach(x => this.entries.push(x.from.getHours()));    
+    reservations
+      .sort( (a, b) => a.from<b.from ? -1 : 1 )
+      .forEach(x => this.populateEntriesOnRefresh(x.from, x.to));
+  }
+  populateEntriesOnRefresh(from: Date, to: Date): void {
+    console.log(from.getHours() + ':' + to.getMinutes());
+    let start: string[] = [];
+    let end: string[] = [];
+    const fHour = from.getHours().toString();
+    const fMinute = from.getMinutes().toString();
+    const tHour = to.getHours().toString();  
+    const tMinute = to.getMinutes().toString();  
+    start[0] = fHour.length<2 ? '0'+fHour : fHour;
+    start[1] = fMinute.length<2 ? '0'+fMinute : fMinute;
+    end[0] = tHour.length<2 ? '0'+tHour : tHour;
+    end[1] = tMinute.length<2 ? '0'+tMinute : tMinute;    
+    this.populateEntries(start, end);
   }
 
   save(){
    
     this.addedEntries.forEach(added => {
-      // var date2 = new Date('1995-12-17T03:24:00');
       let fromStr = this.newReservationForm.get('day').value + 'T' + added.from + ':00';
       let toStr = this.newReservationForm.get('day').value + 'T' + added.to + ':00';
       let reservation: Reservation = {
@@ -154,6 +167,10 @@ export class ReservationsNewComponent implements OnInit {
 
       const start = from.split(':');
       const end = to.split(':');
+      this.populateEntries(start, end);
+    }
+
+    populateEntries(start: string[], end: string[]) {
       let currentHour = start;
 
       while(currentHour[0] <= end[0] ) {
