@@ -51,7 +51,15 @@ export class ReservationsNewComponent implements OnInit {
 
     this.newReservationForm.get('day').valueChanges.subscribe(
       selectedDay => {
-        this.refreshCalendar(selectedDay);
+        const room = this.newReservationForm.get('room').value;
+        this.refreshCalendar(selectedDay, room);
+      }
+    );
+
+    this.newReservationForm.get('room').valueChanges.subscribe(
+      selectedRoom => {
+        const day = this.newReservationForm.get('day').value;
+        this.refreshCalendar(day, selectedRoom);
       }
     );
 
@@ -64,19 +72,18 @@ export class ReservationsNewComponent implements OnInit {
     );
   }
 
-  refreshCalendar(selectedDay: string){
+  refreshCalendar(selectedDay: string, room: string){
     const parts = selectedDay.split('-');
     const year = +parts[0];
     const month = +parts[1]-1;
     const day = +parts[2];
-    const reservations = this.reservationService.getByDate(new Date(year, month, day));
+    const reservations = this.reservationService.getByDate(new Date(year, month, day), room);
 
     reservations
       .sort( (a, b) => a.from<b.from ? -1 : 1 )
       .forEach(x => this.populateEntriesOnRefresh(x.from, x.to));
   }
   populateEntriesOnRefresh(from: Date, to: Date): void {
-    console.log(from.getHours() + ':' + to.getMinutes());
     let start: string[] = [];
     let end: string[] = [];
     const fHour = from.getHours().toString();

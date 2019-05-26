@@ -59,8 +59,12 @@ export class ReservationService {
     );
   }
 
-  getByDate(date: Date) {
-    return this.reservations.filter(x => x.from.toLocaleDateString() === date.toLocaleDateString());
+  getByDate(date: Date, room: string) {
+    return this
+    .reservations
+    .filter(x => 
+      x.from.toLocaleDateString() === date.toLocaleDateString() &&
+      x.roomName === room);
   }
 
   save(reservation: Reservation){
