@@ -51,33 +51,61 @@ export class ReservationsNewComponent implements OnInit {
 
     this.newReservationForm.get('day').valueChanges.subscribe(
       selectedDay => {
+        this.entries = [];
         const room = this.newReservationForm.get('room').value;
-        this.refreshCalendar(selectedDay, room);
+        const who = this.newReservationForm.get('who').value;
+        const roomName = room.name ? room.name : room;
+        this.refreshCalendar(selectedDay, roomName, who);
       }
     );
 
     this.newReservationForm.get('room').valueChanges.subscribe(
       selectedRoom => {
+        this.entries = [];
         const day = this.newReservationForm.get('day').value;
-        this.refreshCalendar(day, selectedRoom);
+        const who = this.newReservationForm.get('who').value;
+        const roomName = selectedRoom.name ? selectedRoom.name : selectedRoom;
+        this.refreshCalendar(day, roomName, who);
+      }
+    );
+
+    this.newReservationForm.get('who').valueChanges.subscribe(
+      selectedWho => {
+        this.entries = [];
+        const day = this.newReservationForm.get('day').value;
+        const room = this.newReservationForm.get('room').value;
+        const roomName = room.name ? room.name : room;
+        this.refreshCalendar(day, roomName, selectedWho);
       }
     );
 
     this.roomService.getAll().subscribe(
-      room => this.rooms.push(room)
+      room => this.rooms.push(room),
+      error => console.log('error ocurred when loading rooms: ' + error),
+      () => {
+        if(this.rooms){
+          this.newReservationForm.controls['room'].setValue(this.rooms[0], {onlySelf: true});
+        }
+      }
     );
 
     this.peopleService.getAll().subscribe(
-      person => this.people.push(person)
+      person => this.people.push(person),
+      error => console.log('error ocurred when loading rooms: ' + error),
+      () => {
+        if(this.people){
+          this.newReservationForm.controls['who'].setValue(this.people[0], {onlySelf: true});
+        }
+      }
     );
   }
 
-  refreshCalendar(selectedDay: string, room: string){
+  refreshCalendar(selectedDay: string, room: string, who: string){
     const parts = selectedDay.split('-');
     const year = +parts[0];
     const month = +parts[1]-1;
     const day = +parts[2];
-    const reservations = this.reservationService.getByDate(new Date(year, month, day), room);
+    const reservations = this.reservationService.get(new Date(year, month, day), room, who);
 
     reservations
       .sort( (a, b) => a.from<b.from ? -1 : 1 )
@@ -102,13 +130,14 @@ export class ReservationsNewComponent implements OnInit {
     this.addedEntries.forEach(added => {
       let fromStr = this.newReservationForm.get('day').value + 'T' + added.from + ':00';
       let toStr = this.newReservationForm.get('day').value + 'T' + added.to + ':00';
+      const person: Person = this.newReservationForm.get('who').value;
       let reservation: Reservation = {
         id: 0,
         description: '',
         from: new Date(fromStr),
-        to: new Date(toStr),
-        who: this.newReservationForm.get('who').value,
-        roomName: this.newReservationForm.get('room').value
+        to: new Date(toStr),        
+        who: `${person.firstName} ${person.lastName}`,
+        roomName: this.newReservationForm.get('room').value.name
       };
       this.reservationService.save(reservation);
     });
@@ -193,9 +222,7 @@ export class ReservationsNewComponent implements OnInit {
           } else{
             currentHour[1] = '30';
           }
-        }
-  
+        }  
       }
     }
-
 }

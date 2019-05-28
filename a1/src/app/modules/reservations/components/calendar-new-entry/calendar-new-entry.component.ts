@@ -31,6 +31,8 @@ export class CalendarNewEntryComponent implements OnInit {
   }
 
   save(){
+    console.log(  this.componentFormGroup.get('to').value );
+    
     this.data.from = this.componentFormGroup.get('from').value;
     this.data.to = this.componentFormGroup.get('to').value;
     this.data.title = this.componentFormGroup.get('title').value;
