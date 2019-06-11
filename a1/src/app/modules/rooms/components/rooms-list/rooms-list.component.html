@@ -1,3 +1,25 @@
-<p>
-  rooms-list works!
-</p>
+<table class="table">
+
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let room of rooms">
+      <th scope="row">{{room.id}}</th>
+      <td>{{room.name}}</td>
+    </tr>
+
+    <tr>
+      <td>
+        <div class="mr-auto p-2 bd-highlight">
+          <img src='../../../../../assets/icons/add_icon.svg' (click)="newFunction()"/>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
