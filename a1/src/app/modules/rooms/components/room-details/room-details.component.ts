@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { NewRoomData } from '../../models/new-room-data';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-room-details',
@@ -7,9 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomDetailsComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  data: NewRoomData;
+  componentFormGroup: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private modal: NgbActiveModal
+  ) { }
 
   ngOnInit() {
+    this.componentFormGroup = this.fb.group({
+      name: [ this.data.name ]
+    });   
   }
+
+  close(){    
+  }
+
+  save(){    
+  }
+  
 
 }

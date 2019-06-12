@@ -10,13 +10,13 @@
   <tbody>
     <tr *ngFor="let room of rooms">
       <th scope="row">{{room.id}}</th>
-      <td>{{room.name}}</td>
+      <td data-editable="true">{{room.name}}</td>
     </tr>
 
     <tr>
       <td>
         <div class="mr-auto p-2 bd-highlight">
-          <img src='../../../../../assets/icons/add_icon.svg' (click)="newFunction()"/>
+          <img src='../../../../../assets/icons/add_icon.svg' (click)="openNewRoomModal()"/>
         </div>
       </td>
     </tr>

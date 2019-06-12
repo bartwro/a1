@@ -1,3 +1,34 @@
-<p>
-  room-details works!
-</p>
+<form 
+(ngSubmit)="save()"
+[formGroup]="componentFormGroup">
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      <span ng-if="data.isNew">New room</span>
+      <span ng-if="!data.isNew">Edit room</span>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label for="inputName">Name:</label>
+          <input type="text" class="form-control" formControlName="name" id="inputName">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
+
+  

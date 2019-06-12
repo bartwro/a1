@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from 'src/app/modules/reservations/models/room';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RoomDetailsComponent } from '../room-details/room-details.component';
 
 @Component({
   selector: 'app-rooms-list',
@@ -23,15 +25,21 @@ export class RoomsListComponent implements OnInit {
     },
   ];
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal,
+  ) { }
 
   ngOnInit() {
   }
 
-  newFunction() {
-    this.rooms.push({
-      id: 4,
-      name: 'new'
-    });
+  openNewRoomModal() {
+    const modalRef = this.modalService.open(RoomDetailsComponent);    
+    modalRef.componentInstance.data = { isNew: true, name: 'new' };
+      // modalRef.result.then(
+      //   resultData => {
+      //     this.saveNewCalendarEntry(resultData.from, resultData.to);
+      //   },
+      //   reject => console.log('modal rejected, reason: ' + reject),
+      // );
   }
 }
