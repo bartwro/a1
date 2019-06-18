@@ -25,6 +25,10 @@ export class RoomsListComponent implements OnInit {
     },
   ];
 
+  activeEditIcon = '../../../../../assets/icons/edit_icon.svg';
+  inactiveEditIcon = '../../../../../assets/icons/edit_icon_inactive.svg';
+  activeId: number = 0;
+
   constructor(
     private modalService: NgbModal,
   ) { }
@@ -42,4 +46,18 @@ export class RoomsListComponent implements OnInit {
       //   reject => console.log('modal rejected, reason: ' + reject),
       // );
   }
+
+  openEditRoomModal(roomId: number){
+    const modalRef = this.modalService.open(RoomDetailsComponent);    
+    modalRef.componentInstance.data = { isNew: false, name: this.rooms.filter(x => x.id === roomId)[0].name };
+  }
+  
+  onMouseOut(id: number){
+    this.activeId = -1;
+  }
+
+  onMouseOver(id: number){
+    this.activeId = id;
+  }
+  
 }

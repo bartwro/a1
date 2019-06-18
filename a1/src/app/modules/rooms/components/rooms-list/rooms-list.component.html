@@ -4,15 +4,22 @@
     <tr>
       <th scope="col">Id</th>
       <th scope="col">Name</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <tr *ngFor="let room of rooms">
       <th scope="row">{{room.id}}</th>
-      <td data-editable="true">{{room.name}}</td>
+      <td><span contenteditable="true">{{room.name}}</span></td>
+      <td>
+        <img [src]="room.id == activeId ? activeEditIcon : inactiveEditIcon"
+          (click)="openEditRoomModal(room.id)" 
+          (mouseover)="onMouseOver(room.id)"
+          (mouseout)="onMouseOut(room.id)" />
+      </td>
     </tr>
-
+    
     <tr>
       <td>
         <div class="mr-auto p-2 bd-highlight">
