@@ -1,4 +1,6 @@
+import { Room } from '../../reservations/models/room';
+
 export interface NewRoomData {
     isNew: boolean,
-    name: string
+    roomData: Room;
 }

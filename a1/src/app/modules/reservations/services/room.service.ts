@@ -14,7 +14,16 @@ export class RoomService {
 
   constructor() { }
 
-  getAll(): Observable<Room> {
-    return from(this.rooms);
+  getAll(): Room[] {
+    return this.rooms;
+  }
+
+  update(room: Room){
+    const toUpdate = this.rooms.filter(x => x.id === room.id);
+    if(toUpdate.length>0){
+      toUpdate[0] = room;
+    } else{
+      throw new Error("Room to update don't exist.");
+    }
   }
 }

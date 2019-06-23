@@ -79,15 +79,10 @@ export class ReservationsNewComponent implements OnInit {
       }
     );
 
-    this.roomService.getAll().subscribe(
-      room => this.rooms.push(room),
-      error => console.log('error ocurred when loading rooms: ' + error),
-      () => {
-        if(this.rooms){
-          this.newReservationForm.controls['room'].setValue(this.rooms[0], {onlySelf: true});
-        }
-      }
-    );
+    this.rooms = this.roomService.getAll();      
+    if(this.rooms){
+      this.newReservationForm.controls['room'].setValue(this.rooms[0], {onlySelf: true});
+    }
 
     this.peopleService.getAll().subscribe(
       person => this.people.push(person),

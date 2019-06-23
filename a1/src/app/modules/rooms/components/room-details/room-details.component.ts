@@ -21,14 +21,16 @@ export class RoomDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.componentFormGroup = this.fb.group({
-      name: [ this.data.name ]
+      name: [ this.data.roomData.name ]
     });   
   }
 
   close(){    
   }
 
-  save(){    
+  save(){
+    this.data.roomData.name = this.componentFormGroup.get('name').value;
+    this.modal.close(this.data);
   }
   
 
