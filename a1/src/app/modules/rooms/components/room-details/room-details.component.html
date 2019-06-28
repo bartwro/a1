@@ -4,10 +4,10 @@
 
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">
-      <span ng-if="data.isNew">New room</span>
-      <span ng-if="!data.isNew">Edit room</span>
+      <span *ngIf="isNew">New room</span>
+      <span *ngIf="isEdit">Edit room</span>
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="close()">
+    <button type="button" class="close" aria-label="Close" (click)="close('x clicked')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -26,7 +26,7 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="close('Cancel clicked')">Cancel</button>
     <button type="submit" class="btn btn-primary">Save</button>
   </div>
 </form>

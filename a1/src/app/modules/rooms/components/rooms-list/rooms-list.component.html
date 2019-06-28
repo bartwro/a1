@@ -13,10 +13,14 @@
       <th scope="row">{{room.id}}</th>
       <td><span contenteditable="true">{{room.name}}</span></td>
       <td>
-        <img [src]="room.id == activeId ? activeEditIcon : inactiveEditIcon"
+        <img [src]="room.id == activeIdEdit ? activeEditIcon : inactiveEditIcon"
           (click)="openEditRoomModal(room.id)" 
-          (mouseover)="onMouseOver(room.id)"
-          (mouseout)="onMouseOut(room.id)" />
+          (mouseover)="onMouseOverEdit(room.id)"
+          (mouseout)="onMouseOutEdit(room.id)" />
+        <img [src]="room.id == activeIdDelete ? activeDeleteIcon : inactiveDeleteIcon"
+          (click)="deleteRoom(room.id)" 
+          (mouseover)="onMouseOverDelete(room.id)"
+          (mouseout)="onMouseOutDelete(room.id)" />
       </td>
     </tr>
     

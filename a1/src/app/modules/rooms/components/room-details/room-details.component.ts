@@ -13,6 +13,8 @@ export class RoomDetailsComponent implements OnInit {
   @Input()
   data: NewRoomData;
   componentFormGroup: FormGroup;
+  isNew = false;
+  isEdit = false;
 
   constructor(
     private fb: FormBuilder,
@@ -22,10 +24,13 @@ export class RoomDetailsComponent implements OnInit {
   ngOnInit() {
     this.componentFormGroup = this.fb.group({
       name: [ this.data.roomData.name ]
-    });   
+    });
+    this.isNew = this.data.isNew;
+    this.isEdit = !this.isNew;
   }
 
-  close(){    
+  close(reason: string){
+    this.modal.dismiss(reason);
   }
 
   save(){

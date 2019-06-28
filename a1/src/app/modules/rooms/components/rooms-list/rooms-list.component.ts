@@ -18,7 +18,11 @@ export class RoomsListComponent implements OnInit {
 
   activeEditIcon = '../../../../../assets/icons/edit_icon.svg';
   inactiveEditIcon = '../../../../../assets/icons/edit_icon_inactive.svg';
-  activeId: number = 0;
+  activeDeleteIcon = '../../../../../assets/icons/delete_active.svg';
+  inactiveDeleteIcon = '../../../../../assets/icons/delete_inactive.svg';
+
+  activeIdEdit: number = 0;
+  activeIdDelete: number = 0;
   rooms: Room[] = [];
 
   constructor(
@@ -47,10 +51,10 @@ export class RoomsListComponent implements OnInit {
 
   openNewRoomModal() {
     const modalRef = this.modalService.open(RoomDetailsComponent);    
-    modalRef.componentInstance.data = { isNew: true, name: 'new' };
+    modalRef.componentInstance.data = { isNew: true, roomData: {name: ''} };
     modalRef.result.then(
-      resultData => {
-        console.log("received save and close from room details.");
+      (resultData: NewRoomData) => {
+        this.roomsService.create(resultData.roomData.name);
       },
       reject => console.log('modal rejected, reason: ' + reject),
     );
@@ -67,13 +71,24 @@ export class RoomsListComponent implements OnInit {
       reject => console.log('modal rejected, reason: ' + reject),
     );
   }
+
+  deleteRoom(id: number){
+    this.roomsService.delete(id);
+  }
   
-  onMouseOut(id: number){
-    this.activeId = -1;
+  onMouseOutEdit(id: number){
+    this.activeIdEdit = -1;
   }
 
-  onMouseOver(id: number){
-    this.activeId = id;
+  onMouseOverEdit(id: number){
+    this.activeIdEdit = id;
   }
   
+  onMouseOutDelete(id: number){
+    this.activeIdDelete = -1;
+  }
+
+  onMouseOverDelete(id: number){
+    this.activeIdDelete = id;
+  }
 }
