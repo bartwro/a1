@@ -1,0 +1,14 @@
+C:\Sources\a1\server\WebApiReservations\bin\Debug\netcoreapp2.2\WebApiReservations.deps.json
+C:\Sources\a1\server\WebApiReservations\bin\Debug\netcoreapp2.2\WebApiReservations.runtimeconfig.json
+C:\Sources\a1\server\WebApiReservations\bin\Debug\netcoreapp2.2\WebApiReservations.runtimeconfig.dev.json
+C:\Sources\a1\server\WebApiReservations\bin\Debug\netcoreapp2.2\WebApiReservations.dll
+C:\Sources\a1\server\WebApiReservations\bin\Debug\netcoreapp2.2\WebApiReservations.pdb
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.csprojAssemblyReference.cache
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.csproj.CoreCompileInputs.cache
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.RazorAssemblyInfo.cache
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.RazorAssemblyInfo.cs
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.AssemblyInfoInputs.cache
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.AssemblyInfo.cs
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.RazorTargetAssemblyInfo.cache
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.dll
+C:\Sources\a1\server\WebApiReservations\obj\Debug\netcoreapp2.2\WebApiReservations.pdb

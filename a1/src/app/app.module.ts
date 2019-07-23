@@ -8,6 +8,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
 import { PeopleModule } from './modules/people/people.module';
 import { UserModule } from './modules/user/user.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserModule } from './modules/user/user.module';
     PeopleModule,
     SharedModule,
     UserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

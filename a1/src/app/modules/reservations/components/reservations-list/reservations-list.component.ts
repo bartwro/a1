@@ -3,6 +3,8 @@ import { Reservation } from '../../models/reservation';
 import { ReservationService } from '../../services/reservation.service';
 import { ReservationListViewModel } from '../../models/reservation-list-view-model';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { AppSettingsService } from 'src/app/modules/shared/services/app-settings.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reservations-list',
@@ -16,7 +18,10 @@ export class ReservationsListComponent implements OnInit {
 
   constructor(
     private reservationService: ReservationService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private appSettingsService: AppSettingsService,
+    private httpClient: HttpClient) {
+    }
 
   ngOnInit() {
     this.reservationService
@@ -25,24 +30,29 @@ export class ReservationsListComponent implements OnInit {
 
     // this.viewModel.sortByRoomIcon = this.viewModel.sortDownInactiveIcon;
     this.viewModel.sortByIcon.room = this.viewModel.sortDownInactiveIcon;
+    this.viewModel.pagingDetails.pageSizeOptions = [5, 10, 15];
+    const pageSize = this.appSettingsService.get("reservationsPageSize");
+    this.viewModel.pagingDetails.selectedPageSize = pageSize>0 ? pageSize : 10;
     this.reservationListForm = this.fb.group({});
   }
 
   private onInitLoad(data: Reservation[]): void {
+    let t = this.httpClient.get("http://localhost:5000/api/values/1");
+    t.subscribe(x => console.log(x.toString()));
+    //console.log(t);
     this.viewModel.reservations = data;
     this.viewModel.filteredReservations = this.viewModel.reservations;
     this.initPagingDetails();
   }
 
   private initPagingDetails() {
-    this.viewModel.pagingDetails.pageSizeOptions = [1, 3, 5];
-    this.viewModel.pagingDetails.selectedPageSize = 5;
     this.viewModel.pagingDetails.currentPage = 1;
     this.viewModel.pagingDetails.length = this.viewModel.reservations.length;
     this.refreshPagingDtls();
   }
 
   pageSizeChange(selectedPageSize: number) {
+    this.appSettingsService.set("reservationsPageSize", selectedPageSize);
     this.viewModel.pagingDetails.selectedPageSize = +selectedPageSize;
     this.refreshPagingDtls();
   }

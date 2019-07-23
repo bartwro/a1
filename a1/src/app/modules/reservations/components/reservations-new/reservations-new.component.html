@@ -14,7 +14,7 @@
     <div class="form-group">
       <label for="selectRoom">Room</label>
       <select class="form-control" id="selectRoom" placeholder="Room" formControlName="room">
-        <option *ngFor='let room of rooms'>
+        <option *ngFor='let room of rooms' [ngValue]="room">
           {{room.name}}
         </option>
       </select>
@@ -22,11 +22,19 @@
 
     <div class="form-group">
       <label for="formGroupExampleInput2">Who</label>
+
       <select class="form-control" id="formGroupExampleInput2" placeholder="Who" formControlName="who">
-        <option *ngFor='let person of people'>
-          {{person.firstName + ' ' + person.lastName}}
+        <option *ngFor='let person of people' [ngValue]="person">
+          {{person.firstName+' '+person.lastName}}
         </option>
       </select>
+
+      <!-- <select class="form-control" [(ngModel)]="sel" name="sel">
+        <option *ngFor="let positionOpt of positionSelect" [ngValue]="positionOpt.position">
+          {{positionOpt.name}}
+        </option>
+      </select> -->
+
     </div>
   </div>
 

@@ -126,6 +126,8 @@ export class ReservationsNewComponent implements OnInit {
       let fromStr = this.newReservationForm.get('day').value + 'T' + added.from + ':00';
       let toStr = this.newReservationForm.get('day').value + 'T' + added.to + ':00';
       const person: Person = this.newReservationForm.get('who').value;
+      console.log(person);
+      console.log(person.firstName);
       let reservation: Reservation = {
         id: 0,
         description: '',

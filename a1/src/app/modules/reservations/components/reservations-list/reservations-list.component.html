@@ -68,39 +68,41 @@
         <td>{{reservation.from | date: 'd/M/yy, hh:mm'}}</td>
         <td>{{reservation.to | date: 'd/M/yy, hh:mm'}}</td>
       </tr>
+    </tbody>
+    <tfoot>
       <tr>
         <td colspan="5">
-            <div class="d-flex bd-highlight mb-3">
-                <div class="mr-auto p-2 bd-highlight">
-                    <img [src]="viewModel.addIconPath" [routerLink]="['/reservations', 'new']" />
-                </div>
+          <div class="d-flex bd-highlight mb-3">
+            <div class="mr-auto p-2 bd-highlight">
+                <img [src]="viewModel.addIconPath" [routerLink]="['/reservations', 'new']" />
+            </div>
                 
-                <div class="p-2 bd-highlight">
-                    <form [formGroup]="reservationListForm" class="form-inline" style="align-items:center">
-                        <div class="form-group mb-2">
-                          <label for="pageSizeSelect">Items per page:</label>
-                          <select (change)="pageSizeChange($event.target.value)"
-                            class="custom-select custom-select-sm"
-                            id="pageSizeSelect"
-                            [value]="viewModel.pagingDetails.selectedPageSize">
-                            <option *ngFor="let option of viewModel.pagingDetails.pageSizeOptions">{{option}}</option>
-                          </select>
-                        </div>
-                        <div class="form-group mb-2">
-                          <label for="pageSizeSelect">
-                            {{viewModel.pagingDetails.currentPage}} of {{viewModel.pagingDetails.numberOfPages}}
-                          </label>
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                          <img [src]="viewModel.arrowLeftPath" (click)="goToPreviousPage()" />
-                          <img [src]="viewModel.arrowRightPath" (click)="goToNextPage()" />
-                        </div>
-                    </form>
-                </div>
-              </div>
+            <div class="p-2 bd-highlight">
+                <form [formGroup]="reservationListForm" class="form-inline" style="align-items:center">
+                    <div class="form-group mb-2">
+                      <label for="pageSizeSelect">Items per page:</label>
+                      <select (change)="pageSizeChange($event.target.value)"
+                        class="custom-select custom-select-sm"
+                        id="pageSizeSelect"
+                        [value]="viewModel.pagingDetails.selectedPageSize">
+                        <option *ngFor="let option of viewModel.pagingDetails.pageSizeOptions">{{option}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group mb-2">
+                      <label for="pageSizeSelect">
+                        {{viewModel.pagingDetails.currentPage}} of {{viewModel.pagingDetails.numberOfPages}}
+                      </label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <img [src]="viewModel.arrowLeftPath" (click)="goToPreviousPage()" />
+                      <img [src]="viewModel.arrowRightPath" (click)="goToNextPage()" />
+                    </div>
+                </form>
+            </div>
+          </div>
         </td>
       </tr>
-    </tbody>
+    </tfoot>
   </table>
 
 </div>
