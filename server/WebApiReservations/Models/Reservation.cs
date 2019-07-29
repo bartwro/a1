@@ -39,5 +39,7 @@ namespace WebApiReservations.Models
         public int PersonId { get; set; }
         public string FirstName{ get; set; }
         public string LastName{ get; set; }
+
+        public List<Reservation> Reservations {get;set;}
     }
 }

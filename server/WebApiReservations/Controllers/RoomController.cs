@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApiReservations.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace WebApiReservations.Controllers
 {
@@ -19,7 +21,7 @@ namespace WebApiReservations.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Room>> CreateReservation([FromBody] Room room){
+        public async Task<ActionResult<Room>> CreateRoom([FromBody] Room room){
             _db.Rooms.Add(room);
             await _db.SaveChangesAsync();
             return CreatedAtAction(
@@ -31,8 +33,10 @@ namespace WebApiReservations.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            var room = await _db.Rooms.FindAsync(id);
-
+            var room = await _db.Rooms
+                .Include(x => x.Reservations)
+                .FirstOrDefaultAsync(x => x.RoomId == id);
+            
             if (room == null)
             {
                 return NotFound();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApiReservations.Models;
+using WebApiReservations.Validators;
 
 namespace WebApiReservations.Controllers
 {
@@ -12,10 +13,12 @@ namespace WebApiReservations.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly ReservationContext _db;
-        
+        private readonly ReservationValidator _reservationValidator;
+
         public ReservationController(ReservationContext db)
         {
             this._db = db;
+            this._reservationValidator = new ReservationValidator(db);
         }
 
         // [HttpGet]
@@ -30,6 +33,13 @@ namespace WebApiReservations.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Reservation>> CreateReservation([FromBody] Reservation reservation){
+
+            var validated = await this._reservationValidator.Validate(reservation);
+
+            if(string.IsNullOrEmpty(validated.ErrorMessage) == false ){
+                return BadRequest(validated.ErrorMessage);
+            }
+
             _db.Reservations.Add(reservation);
             await _db.SaveChangesAsync();
             return CreatedAtAction(
