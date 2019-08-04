@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebApiReservations.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 namespace WebApiReservations.Validators
 {
@@ -43,6 +42,11 @@ namespace WebApiReservations.Validators
             else{
                 //person is not available when person has other reservation in the same time
                 var overlap = CheckIfReservationOverlapWithExisting(reservation, person.Reservations);
+                if(overlap){
+                    return new ValidationResult(
+                        $"Person with id: {person.PersonId} is not fully available."
+                    );
+                }
             }
 
             return new ValidationResult("");
