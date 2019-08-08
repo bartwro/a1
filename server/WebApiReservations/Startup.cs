@@ -31,6 +31,15 @@ namespace WebApiReservations
 
             services.AddDbContext<ReservationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ReservationDatabase")));
+            
+            services.AddCors(c =>  
+            {  
+                c.AddPolicy("AllowLocalhost", options => 
+                    options
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +56,7 @@ namespace WebApiReservations
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowLocalhost");
             app.UseMvc();
         }
     }

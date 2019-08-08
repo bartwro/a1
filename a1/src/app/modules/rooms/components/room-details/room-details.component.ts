@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NewRoomData } from '../../models/new-room-data';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RoomService } from 'src/app/modules/shared/services/room.service';
 
 @Component({
   selector: 'app-room-details',
@@ -18,7 +19,8 @@ export class RoomDetailsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private modal: NgbActiveModal
+    private modal: NgbActiveModal,
+    private roomService: RoomService
   ) { }
 
   ngOnInit() {
@@ -35,7 +37,12 @@ export class RoomDetailsComponent implements OnInit {
 
   save(){
     this.data.roomData.name = this.componentFormGroup.get('name').value;
-    this.modal.close(this.data);
+    this.roomService
+      .createNew(this.data.roomData)
+      .subscribe(x => {
+        this.modal.close(this.data);
+        console.log('saved');
+      });
   }
   
 

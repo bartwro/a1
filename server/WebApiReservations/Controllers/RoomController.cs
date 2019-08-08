@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApiReservations.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Cors;
 
 namespace WebApiReservations.Controllers
 {
@@ -29,7 +29,7 @@ namespace WebApiReservations.Controllers
                 new { id = room.RoomId },
                 room );
         }
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
